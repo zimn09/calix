@@ -1,1 +1,38 @@
+name: Build EXE
+
+on:
+  push:
+    branches: [ main, master ] # Spustí se při každém nahrání kódu na GitHub
+  workflow_dispatch: # Umožní spustit kompilaci i ručně kliknutím
+
+jobs:
+  build:
+    runs-on: windows-latest
+
+    steps:
+    - name: Check out repository
+      uses: actions/checkout@v4
+
+    - name: Set up Python
+      uses: actions/setup-python@v5
+      with:
+        python-node-version: '3.10'
+
+    - name: Install dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install pyinstaller
+        # Pokud váš program potřebuje další knihovny, dopište je sem, např.:
+        # pip install requests pygame
+
+    - name: Build EXE with PyInstaller
+      run: |
+        pyinstaller --onefile main.py
+        # Změňte main.py na název vašeho hlavního souboru, pokud se jmenuje jinak
+
+    - name: Upload EXE artifact
+      uses: actions/upload-artifact@v4
+      with:
+        name: Windows-Executable
+        path: dist/*.exe
 
