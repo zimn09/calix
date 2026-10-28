@@ -670,6 +670,15 @@ class MainWindow(QMainWindow):
 
     def _on_record(self, sid, value):
         self.store.add_record(sid, value)
+        # Auto-complete skill if benchmark reached and prerequisites are met
+        try:
+            skill = self.graph.skills.get(sid)
+            if skill and skill.target > 0 and value >= skill.target:
+                progress = self.store.progress()
+                if self.graph.status(sid, progress) in ("available", "training"):
+                    self.store.set_status(sid, "completed")
+        except Exception:
+            pass
         self._refresh()
         self._sync_and_announce()
 

@@ -143,7 +143,14 @@ class DetailPanel(QWidget):
         self.btn_train.setText("Stop training" if st == "training" else "Start training")
         self.btn_train.setEnabled(st in ("available", "training"))
         self.btn_done.setText("Mark incomplete" if st == "completed" else "Mark completed")
-        self.btn_done.setEnabled(st != "locked")
+        # Allow marking complete if not locked, or if already completed (to unmark),
+        # or if benchmark target has been reached
+        can_complete = st != "locked" or st == "completed"
+        if not can_complete and s.target > 0:
+            best = self.store.best(self.sid)
+            if best is not None and best >= s.target:
+                can_complete = True
+        self.btn_done.setEnabled(can_complete)
 
         # personal record
         if s.target > 0:

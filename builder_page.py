@@ -162,6 +162,9 @@ class WorkoutBuilderPage(QWidget):
         self.b_del.clicked.connect(self._delete)
         for b in (b_new, self.b_dup, self.b_del):
             row.addWidget(b)
+        self.b_preset = QPushButton("Load preset")
+        self.b_preset.clicked.connect(self._load_preset)
+        row.addWidget(self.b_preset)
         card.lay.addWidget(self.saved, 1)
         card.lay.addLayout(row)
         return card
@@ -656,3 +659,33 @@ class WorkoutBuilderPage(QWidget):
             self.reload_saved(wid)
             w = self.repo.workout(wid)
             self._fill_editor(wid, w["name"], w["description"], w["style"], w["entries"])
+
+    def _load_preset(self):
+        from PySide6.QtWidgets import QInputDialog, QMessageBox
+        presets = self._get_presets()
+        names = [p[0] for p in presets]
+        name, ok = QInputDialog.getItem(self, "Load preset", "Choose a calisthenics preset:", names, 0, False)
+        if not ok or not name:
+            return
+        # find preset
+        for pname, pdata in presets:
+            if pname == name:
+                # create new workout from preset
+                try:
+                    wid = self.repo.create_workout(pname)
+                    # clear default entries and add preset
+                    self.repo.delete_workout(wid)
+                    wid = self.repo.create_workout(pname)
+                    for e in pdata:
+                        self.repo.add_entry(wid, e)
+                    self.reload_saved()
+                    # select it
+                    for i in range(self.saved.count()):
+                        it = self.saved.item(i)
+                        if it.data(Qt.UserRole) == wid:
+                            self.saved.setCurrentItem(it)
+                            break
+                    QMessageBox.information(self, "Loaded", f"Preset '{name}' added to your workouts.")
+                except Exception as ex:
+                    QMessageBox.warning(self, "Error", str(ex))
+                break
