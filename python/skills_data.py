@@ -21,6 +21,7 @@ CATEGORIES = {
     "balance": ("Balance", "#b197fc"),
     "static": ("Static Holds", "#38d9a9"),
     "legs": ("Legs", "#ff922b"),
+    "cardio": ("Cardio", "#20c997"),
 }
 TIERS = ["Beginner", "Intermediate", "Advanced", "Elite"]
 TIER_XP = [10, 25, 60, 150]
@@ -415,6 +416,21 @@ SKILLS = [
        "Single-leg squat with the free leg threaded behind the body. Extreme mobility and strength.",
        "Pistol with long pause|Deep rear-leg crossover|Full dragon pistol",
        "3 x 2-4 per side", "Pistol squat variations", "reps", 3),
+    _s("cardio_base", "Cardio Base", "cardio", 0, "",
+       "Build aerobic capacity with easy-paced bodyweight cardio and steady holds.",
+       "Easy paced bodyweight circuits|Add burpees|Add plank holds",
+       "Easy rounds: 8 squats, 5 push-ups, 20 s plank|Add burpees|Longer easy sessions",
+       "Fewer reps|Rest more|No burpees", "s", 600),
+    _s("cardio_build", "Cardio Builder", "cardio", 1, "cardio_base",
+       "Add intensity with interval cardio and longer circuits.",
+       "Low-intensity intervals|Moderate intervals|High-intensity intervals",
+       "20 s work / 40 s rest|Add burpees|30 s work / 30 s rest",
+       "Lower intensity|Longer rest", "s", 300),
+    _s("cardio_peak", "Cardio Peak", "cardio", 2, "cardio_build",
+       "High-intensity metabolic conditioning to raise work capacity.",
+       "Circuit intervals|Tabata-style intervals|Max effort circuits",
+       "30 s work / 30 s rest|Add burpees|20 s work / 10 s rest",
+       "Lower intensity|Longer rest", "s", 240),
 ]
 
 SKILLS_BY_ID = {s.id: s for s in SKILLS}

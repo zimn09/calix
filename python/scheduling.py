@@ -141,9 +141,9 @@ class ScheduleRepo:
 
 
 def install_example_routine(wrepo, srepo):
-    """Mon push, Tue pull, Wed rest, Thu legs & core, Sat skill training."""
+    """Mon push, Tue pull, Wed rest, Thu cardio, Sat skill training."""
     ids = wrepo.install_examples()
-    plan = [(0, "Push Day"), (1, "Pull Day"), (3, "Legs & Core"), (5, "Skill Training")]
+    plan = [(0, "Push Day"), (1, "Pull Day"), (3, "Cardio"), (5, "Skill Training")]
     have = {(e["weekday"], e["workout_id"], e["is_rest"]) for e in srepo.weekly_entries()}
     for wd, name in plan:
         if (wd, ids[name], 0) not in have:
