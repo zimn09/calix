@@ -38,6 +38,28 @@ Nothing else is needed: the GUI, the data and the database are all local.
 | XP / achievements | Same rules as Python: qualifying workouts (2 min, half the sets, 3 per day), sets, PRs, ranks, skill unlocks/completions, achievements; idempotent ledger keyed by activity |
 | Settings | Accent, background preset, corner style, font size, tree grid/effects, data folder, XP recompute |
 
+## Building the distributables
+
+```bash
+./tools/package.sh
+```
+
+writes into `dist/`:
+
+| File | What it is |
+| --- | --- |
+| `CALIX-1.1.0-x86_64.AppImage` | portable Linux build (single file, `chmod +x` and run) |
+| `calix-linux-x86_64` | the bare Linux executable |
+| `CALIX-1.1.0-windows-x86_64.exe` | 64-bit Windows build, C runtime linked in statically (no VC++ redistributable needed) |
+
+The AppImage is assembled from a type-2 runtime plus an xz squashfs of the
+AppDir; the Windows build uses `cargo xwin` (install it once with
+`cargo install cargo-xwin && rustup target add x86_64-pc-windows-msvc`).
+
+The AppImage needs the usual desktop libraries present on any normal desktop
+(GL, xkbcommon); no FUSE-2 is required for it to run on most systems, but if
+mounting is unavailable use `APPIMAGE_EXTRACT_AND_RUN=1 ./CALIX-*.AppImage`.
+
 ## Layout
 
 ```

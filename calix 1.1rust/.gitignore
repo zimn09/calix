@@ -1,1 +1,6 @@
 /target
+/dist/AppDir
+/dist/*.squashfs
+/dist/squashfs-root
+/dist/appimagetool
+/dist/runtime-x86_64

@@ -399,7 +399,11 @@ class MainWindow(QMainWindow):
 
     def _exec_restart(self, slot):
         """Replace this process with a fresh CALIX using ``slot`` (no further Qt calls)."""
-        args = [sys.executable, str(Path(__file__).resolve()), "--profile", str(slot)]
+        if getattr(sys, "frozen", False):
+            # PyInstaller/AppImage build: the executable is the entry point itself
+            args = [sys.executable, "--profile", str(slot)]
+        else:
+            args = [sys.executable, str(Path(__file__).resolve()), "--profile", str(slot)]
         try:
             os.execv(sys.executable, args)
         except OSError as exc:
