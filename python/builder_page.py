@@ -271,7 +271,7 @@ class WorkoutBuilderPage(QWidget):
         self.f_rs, self.f_ra = QSpinBox(), QSpinBox()
         self.f_sets.setRange(1, 30)
         self.f_reps.setRange(0, 500)
-        self.f_hold.setRange(0, 900)
+        self.f_hold.setRange(0, 7200)
         self.f_hold.setSuffix(" s")
         self.f_rs.setRange(0, 900)
         self.f_rs.setSuffix(" s")

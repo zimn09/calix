@@ -466,7 +466,7 @@ class ActiveWorkoutPage(QWidget):
             color = "#69db7c" if s["done"] else "#ffd43b" if r - 1 == first else "#c9d1d9"
             lab.setStyleSheet(f"color: {color}; font-weight: 700; font-size: 11pt;")
             spin = QSpinBox()
-            spin.setRange(0, 900 if is_hold else 999)
+            spin.setRange(0, 7200 if is_hold else 999)
             spin.setSuffix(" s" if is_hold else " reps")
             spin.setValue(s["hold"] if is_hold else s["reps"])
             spin.valueChanged.connect(lambda v, s=s, f=("hold" if is_hold else "reps"): self._set_field(s, f, v))

@@ -180,7 +180,20 @@ def _m5_library_profile(db):
         db.execute("ALTER TABLE exercises ADD COLUMN anim TEXT NOT NULL DEFAULT ''")
     db.commit()
 
-MIGRATIONS = [_m1_skill_tree, _m2_training, _m3_ranks_settings, _m4_xp_achievements, _m5_library_profile]
+def _m6_running(db):
+    """Running log: a completed session can carry a distance (in metres).
+
+    Existing sessions get 0, so nothing that is already saved changes meaning.
+    """
+    cols = [r[1] for r in db.execute("PRAGMA table_info(sessions)")]
+    if "distance_m" not in cols:
+        db.execute("ALTER TABLE sessions ADD COLUMN distance_m INTEGER NOT NULL DEFAULT 0")
+    db.execute("CREATE INDEX IF NOT EXISTS idx_sessions_distance ON sessions(distance_m, session_date)")
+    db.commit()
+
+
+MIGRATIONS = [_m1_skill_tree, _m2_training, _m3_ranks_settings, _m4_xp_achievements, _m5_library_profile,
+              _m6_running]
 SCHEMA_VERSION = len(MIGRATIONS)
 
 

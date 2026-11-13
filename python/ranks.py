@@ -44,7 +44,7 @@ TOPS = {
     "hanging_knee_raise": 40, "hanging_leg_raise": 30, "ab_wheel": 25, "tuck_l_sit": 60, "l_sit": 60,
     "toes_to_bar": 20, "dragon_flag": 10,
     # legs
-    "squat": 100, "jump_squat": 50, "lunge": 40, "split_squat": 40, "bulgarian": 25, "step_up": 40,
+    "run": 3600, "squat": 100, "jump_squat": 50, "lunge": 40, "split_squat": 40, "bulgarian": 25, "step_up": 40,
     "glute_bridge": 60, "wall_sit": 240, "calf_raise": 80, "single_calf_raise": 50, "shrimp_squat": 12,
     "pistol_squat": 20, "nordic_curl": 10,
     # skill training

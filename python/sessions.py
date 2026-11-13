@@ -117,7 +117,7 @@ class SessionRepo:
         return list(best.values())
 
     def summary(self, sid):
-        return fetch_one(self.db, """SELECT s.id, s.workout_name, s.session_date, s.elapsed_sec,
+        return fetch_one(self.db, """SELECT s.id, s.workout_name, s.session_date, s.elapsed_sec, s.distance_m,
             COUNT(ss.id) AS sets_total, COALESCE(SUM(ss.done),0) AS sets_done,
             COALESCE(SUM(CASE WHEN ss.done=1 AND ss.kind='reps' THEN ss.reps ELSE 0 END),0) AS reps_total,
             COALESCE(SUM(CASE WHEN ss.done=1 AND ss.kind='hold' THEN ss.hold ELSE 0 END),0) AS hold_total,
@@ -126,7 +126,7 @@ class SessionRepo:
 
     def history(self, limit=500):
         return fetch_all(self.db, """SELECT s.id, s.workout_id, s.workout_name, s.session_date, s.started,
-            s.elapsed_sec, COUNT(ss.id) AS sets_total, COALESCE(SUM(ss.done),0) AS sets_done,
+            s.elapsed_sec, s.distance_m, COUNT(ss.id) AS sets_total, COALESCE(SUM(ss.done),0) AS sets_done,
             COALESCE(SUM(CASE WHEN ss.done=1 AND ss.kind='reps' THEN ss.reps ELSE 0 END),0) AS reps_total,
             COALESCE(SUM(CASE WHEN ss.done=1 AND ss.kind='hold' THEN ss.hold ELSE 0 END),0) AS hold_total
             FROM sessions s LEFT JOIN session_sets ss ON ss.session_id=s.id

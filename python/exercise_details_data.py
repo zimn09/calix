@@ -486,6 +486,15 @@ _d("dragon_flag",
    prereq=("hollow_hold", "ab_wheel"), related=("hollow_hold", "toes_to_bar"))
 
 # ================================================================== LEGS
+_d("run",
+   ("Quads", "Glutes", "Hamstrings", "Calves", "Core"),
+   ("Overstriding with heavy heel strike", "Hunching shoulders and slouching forward",
+    "Starting at an unsustainably fast pace"),
+   ("Maintain a tall posture, relax shoulders and take light rhythmic steps",
+    "Land with feet under your hips rather than out in front",
+    "Keep a steady, conversational pace throughout the entire run"),
+   easier=(), harder=(), prereq=(), related=("squat", "calf_raise"), equipment="Running shoes")
+
 _d("squat",
    ("Quads", "Glutes", "Hamstrings", "Core"),
    ("Heels lifting off the floor", "Knees collapsing inwards",

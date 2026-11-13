@@ -25,6 +25,8 @@ EXAMPLE_WORKOUTS = [
       ("hanging_knee_raise", 3, 10), ("hollow_hold", 3, 25), ("plank", 3, 40)]),
     ("Cardio", "Bodyweight cardio and metabolic conditioning.", "endurance",
      [("burpee", 3, 8), ("jump_squat", 3, 10), ("tuck_jump", 3, 6), ("plank", 2, 30)]),
+    ("Run", "Steady-pace aerobic run for cardiovascular endurance.", "endurance",
+     [("run", 1, 1200)]),
     ("Skill Training", "Low-fatigue practice of handstands, levers and planche.", "skill",
      [("wall_handstand", 5, 30), ("crow_pose", 4, 15), ("tuck_front_lever", 4, 8),
       ("planche_lean", 4, 15), ("skin_the_cat", 3, 4), ("tuck_l_sit", 4, 15)]),
@@ -220,7 +222,7 @@ class WorkoutRepo:
             self.db.execute("DELETE FROM workouts WHERE id=?", (wid,))
 
     def install_examples(self):
-        """Create the example Push/Pull/Cardio/Skill workouts (reusing same-named ones)."""
+        """Create the example Push/Pull/Legs & Core/Cardio/Run/Skill workouts (reusing same-named ones)."""
         ids = {}
         existing = {w["name"]: w["id"] for w in self.workouts()}
         for name, desc, style, items in EXAMPLE_WORKOUTS:

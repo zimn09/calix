@@ -6,6 +6,7 @@ from PySide6.QtWidgets import (QHBoxLayout, QLabel, QListWidget, QListWidgetItem
                                QScrollArea, QTextBrowser, QVBoxLayout, QWidget)
 
 import stats
+from run_repo import fmt_distance, fmt_pace, fmt_time, pace_seconds
 from ui_common import BarChart, Card, Heatmap, StatTile, confirm, fmt_duration, plain, pretty_date
 
 
@@ -138,8 +139,12 @@ class HistoryPage(QWidget):
         self.sessions.clear()
         for s in self.sess.history():
             d = dt.date.fromisoformat(s["session_date"])
-            it = QListWidgetItem(f"{pretty_date(d, True)}  ·  {s['workout_name']}  ·  "
-                                 f"{fmt_duration(s['elapsed_sec'])}  ·  {s['sets_done']}/{s['sets_total']} sets")
+            if s["distance_m"]:
+                pace = fmt_pace(pace_seconds(s["distance_m"], s["elapsed_sec"]))
+                detail = f"{fmt_distance(s['distance_m'])}  ·  {fmt_time(s['elapsed_sec'])}  ·  {pace} /km"
+            else:
+                detail = f"{fmt_duration(s['elapsed_sec'])}  ·  {s['sets_done']}/{s['sets_total']} sets"
+            it = QListWidgetItem(f"{pretty_date(d, True)}  ·  {s['workout_name']}  ·  {detail}")
             it.setData(Qt.UserRole, s["id"])
             self.sessions.addItem(it)
             if s["id"] == keep:
@@ -156,6 +161,12 @@ class HistoryPage(QWidget):
             return
         sid = item.data(Qt.UserRole)
         s = self.sess.summary(sid)
+        if s["distance_m"]:
+            pace = fmt_pace(pace_seconds(s["distance_m"], s["elapsed_sec"]))
+            self.detail.setHtml(
+                f"<p><b style='font-size:12pt'>{s['workout_name']}</b><br><span style='color:#8b95a7'>"
+                f"{fmt_distance(s['distance_m'])} · {fmt_time(s['elapsed_sec'])} · {pace} /km</span></p>")
+            return
         rows = self.sess.sets(sid)
         html = [f"<p><b style='font-size:12pt'>{s['workout_name']}</b><br><span style='color:#8b95a7'>"
                 f"{fmt_duration(s['elapsed_sec'])} · {s['sets_done']}/{s['sets_total']} sets · "

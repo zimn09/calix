@@ -32,6 +32,8 @@ from profiles_dialog import ProfilesDialog
 from rank_repo import RankRepo
 from rank_widgets import rank_html
 from ranks_page import RankPage
+from run_page import RunPage
+from run_repo import RunRepo
 from schedule_page import SchedulePage
 from scheduling import ScheduleRepo
 from sessions import SessionRepo
@@ -46,7 +48,8 @@ from xp_engine import XpEngine
 from xp_widgets import announce_progress, set_animations
 
 PAGES = [("tree", "Skill Tree"), ("library", "Library"), ("builder", "Workout Builder"),
-         ("schedule", "Schedule"), ("active", "Active Workout"), ("history", "History"),
+         ("schedule", "Schedule"), ("active", "Active Workout"), ("running", "Running"),
+         ("history", "History"),
          ("dashboard", "Dashboard"), ("ranks", "Ranks"), ("achievements", "Achievements"),
          ("profile", "Profile"), ("settings", "Settings")]
 
@@ -70,7 +73,7 @@ HELP_TEXT = (
     "<b>Sound &amp; music</b><br>Buttons pop, and level-ups, achievements and your own confirmations have their "
     "own sounds. Four background tracks (Temple Bells, Iron Forge, Void Drone, Dawn Run) can be picked in "
     "<i>Settings → Sound &amp; Music</i>; Ctrl+M mutes everything. All audio is generated inside the app.<br><br>"
-    "<b>Shortcuts</b><br>Alt+1…11 switch sections · Ctrl+F search skills · Ctrl+0 fit tree · Ctrl++ / Ctrl+- zoom · Ctrl+M mute"
+    "<b>Shortcuts</b><br>Alt+1…12 switch sections · Ctrl+F search skills · Ctrl+0 fit tree · Ctrl++ / Ctrl+- zoom · Ctrl+M mute"
 )
 
 
@@ -85,6 +88,7 @@ class MainWindow(QMainWindow):
         self.profiles = ProfileRepo(self.store.db)
         self.srepo = ScheduleRepo(self.store.db)
         self.sess = SessionRepo(self.store, self.wrepo)
+        self.runs = RunRepo(self.store)
         self.ranks = RankRepo(self.store, self.wrepo)
         self.xp = XpEngine(self.store, self.wrepo, self.sess, self.ranks, self.graph)
         self.settings_db = PM.open_settings_db()      # shared by all local profiles
@@ -126,13 +130,15 @@ class MainWindow(QMainWindow):
                                    avatar_unlocks=self._unlocked_avatars)
         self.schedule = SchedulePage(self.srepo, self.wrepo, self.sess)
         self.active = ActiveWorkoutPage(self.sess, self.wrepo, self.srepo, self.ranks, self.xp)
+        self.run_page = RunPage(self.runs)
         self.history = HistoryPage(self.sess, self.srepo)
         self.dashboard = DashboardPage(self.graph, self.store, self.sess, self.srepo, self.ranks, self.xp)
         self.rank_page = RankPage(self.ranks, self.wrepo, self.xp)
         self.achievements_page = AchievementsPage(self.xp)
         self.settings_page = SettingsPage(self.settings, self.audio)
         self.pages = {"tree": tree_page, "library": self.library, "builder": self.builder,
-                      "schedule": self.schedule, "active": self.active, "history": self.history,
+                      "schedule": self.schedule, "active": self.active, "running": self.run_page,
+                      "history": self.history,
                       "dashboard": self.dashboard, "ranks": self.rank_page,
                       "achievements": self.achievements_page, "profile": self.profile,
                       "settings": self.settings_page}
@@ -177,6 +183,7 @@ class MainWindow(QMainWindow):
         self.schedule.resumeRequested.connect(self._resume)
         self.schedule.scheduleChanged.connect(self.dashboard.refresh)
         self.active.sessionChanged.connect(self._data_changed)
+        self.run_page.runsChanged.connect(self._data_changed)
         self.history.historyChanged.connect(self._data_changed)
         self.dashboard.navigate.connect(self.show_page)
         self.dashboard.startRequested.connect(self._start)

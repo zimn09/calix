@@ -127,6 +127,8 @@ EXERCISES = [
        "Hold a bench behind your head. Lower the body as one straight line with control.", "dragon_flag", "dragon_flag"),
 
     # ---------------------------------------------------------------- LEGS
+    _e("run", "Running", "legs", 0, "hold", 1, 1200, 60,
+       "Steady-pace running or jogging for aerobic endurance and cardiovascular health.", "", ""),
     _e("squat", "Bodyweight Squat", "legs", 0, "reps", 3, 15, 45,
        "Feet shoulder-width, heels down. Squat to full depth with an upright chest.", "squat", "squat"),
     _e("lunge", "Lunge", "legs", 0, "reps", 3, 10, 60,

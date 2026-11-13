@@ -377,10 +377,6 @@ SKILLS = [
        "Simultaneous torso and leg raise forming a 'V'. Excellent dynamic core strength.",
        "Bent-knee V-ups|Straight legs|Controlled descents",
        "4 x 6-10 V-ups", "Hollow hold", "reps", 15),
-    _s("dragon_flag", "Dragon Flag", "core", 2, "hollow_body_press",
-       "Bruce Lee's classic. Lower the body under control keeping a straight line.",
-       "Bent knees|Negative dragon flags|Full dragon flags",
-       "4 x 3-6 negatives/holds", "Hollow body press hold", "s", 10),
 
     # ------------------------------------------------------------ LEGS
     _s("squat", "Bodyweight Squat", "legs", 0, "",
